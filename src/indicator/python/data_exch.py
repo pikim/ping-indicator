@@ -5,17 +5,19 @@
 import os
 import time
 
+import conf
 
 class Data_Exch:
     def __init__(self, user):
         self.filename = os.path.expanduser("/tmp/ping-indicator-" + user + ".data")
+        self.conf = conf.Conf(user)
 
     # self.read()
     def read(self):
         if os.path.exists(self.filename):
             t = int(time.time())
             delays = []
-            if t - int(os.path.getmtime(self.filename)) < 3:
+            if t - int(os.path.getmtime(self.filename)) < 2*self.conf.refreshInterval:
                 f = open(self.filename, "r")
                 for line in f:
                     parts = line.strip().split(':')
